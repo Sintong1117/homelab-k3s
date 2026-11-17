@@ -6,7 +6,7 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-  - host: grafana.local # Anda bisa mengganti ini dengan IP VM Anda
+  - host: grafana.local
     http:
       paths:
       - path: /
