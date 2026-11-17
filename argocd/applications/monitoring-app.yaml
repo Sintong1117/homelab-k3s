@@ -12,7 +12,7 @@ spec:
     helm:
       values: |
         crds:
-          enabled: false # <-- Mencegah error "Too long" pada CRD
+          enabled: false
         prometheus:
           prometheusSpec:
             storageSpec:
@@ -23,7 +23,7 @@ spec:
                     requests:
                       storage: 5Gi
         grafana:
-          adminPassword: "admin123" # Ganti dengan password aman Anda
+          adminPassword: "admin123"
           persistence:
             enabled: true
             storageClassName: openebs-hostpath
@@ -38,3 +38,4 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+      - ClientSideApplyMigration=false # <-- KUNCI UNTUK MEMUTUS ERROR MIGRASI
