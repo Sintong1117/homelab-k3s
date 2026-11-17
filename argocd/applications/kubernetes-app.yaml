@@ -9,6 +9,9 @@ spec:
     repoURL: 'https://github.com/Sintong1117/homelab-k3s.git'
     targetRevision: HEAD
     path: kubernetes
+    directory:
+      recurse: true  # <-- MEMAKSA ARGO CD MEMBACA SEMUA SUB-FOLDER
+      jsonnet: {}
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: default
@@ -17,4 +20,4 @@ spec:
       prune: true
       selfHeal: true
     syncOptions:
-      - Replace=true
+      - CreateNamespace=true
