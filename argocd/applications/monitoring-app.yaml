@@ -11,6 +11,8 @@ spec:
     targetRevision: '*'
     helm:
       values: |
+        crds:
+          enabled: false # <-- Mencegah error "Too long" pada CRD
         prometheus:
           prometheusSpec:
             storageSpec:
