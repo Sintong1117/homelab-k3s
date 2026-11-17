@@ -29,22 +29,3 @@ spec:
     app: whoami
   ports:
     - port: 80
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: whoami-ingress
-  namespace: default
-spec:
-  ingressClassName: traefik
-  rules:
-    - host: whoami.local
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: whoami
-                port:
-                  number: 80
