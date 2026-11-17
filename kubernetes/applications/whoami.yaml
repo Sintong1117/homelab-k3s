@@ -38,13 +38,13 @@ metadata:
 spec:
   ingressClassName: traefik
   rules:
-  - host: whoami.local
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: whoami
-            port:
-              number: 80
+    - host: whoami.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: whoami
+                port:
+                  number: 80
