@@ -17,7 +17,8 @@ spec:
           enabled: true
           isDefaultClass: true
         service:
-          type: LoadBalancer
+          spec:
+            type: LoadBalancer
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: kube-system
