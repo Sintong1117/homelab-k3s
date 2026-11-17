@@ -9,6 +9,13 @@ spec:
     repoURL: 'https://cloudnative-pg.github.io/charts'
     chart: cloudnative-pg
     targetRevision: '*'
+    helm:
+      values: |
+        crds:
+          create: true
+        # Memaksa ServerSideApply khusus untuk CRD yang besar
+        extraAnnotations:
+          argocd.argoproj.io/sync-options: "ServerSideApply=true,Replace=true"
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: cnpg-system
@@ -19,3 +26,4 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+      - ClientSideApplyMigration=false
