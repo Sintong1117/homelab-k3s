@@ -1,0 +1,10 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: portofolio-db
+  namespace: default
+spec:
+  instances: 1
+  storage:
+    size: 1Gi
+    storageClass: openebs-hostpath

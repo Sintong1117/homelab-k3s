@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portofolio-web
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: portofolio-web
+  template:
+    metadata:
+      labels:
+        app: portofolio-web
+    spec:
+      containers:
+        - name: portofolio-web
+          image: batara593/portofolio-web:v1 # <--- Ubah ke image Docker Hub Anda
+          ports:
+            - containerPort: 5000
+          env:
+            # Otomatis mengambil kredensial dari database PostgreSQL di atas
+            - name: DB_HOST
+              value: "portofolio-db-rw"
+            - name: DB_NAME
+              valueFrom: {secretKeyRef: {name: portofolio-db-app, key: dbname}}
+            - name: DB_USER
+              valueFrom: {secretKeyRef: {name: portofolio-db-app, key: user}}
+            - name: DB_PASS
+              valueFrom: {secretKeyRef: {name: portofolio-db-app, key: password}}
+          resources:
+            limits: {cpu: "200m", memory: "256Mi"}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: portofolio-web
+  namespace: default
+spec:
+  selector:
+    app: portofolio-web
+  ports:
+    - port: 80
+      targetPort: 5000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: portofolio-ingress
+  namespace: default
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: portofolio.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: portofolio-web
+                port:
+                  number: 80
