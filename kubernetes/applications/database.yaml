@@ -17,6 +17,9 @@ kind: Cluster
 metadata:
   name: portofolio-db
   namespace: default
+  annotations:
+    container.apparmor.security.beta.kubernetes.io/postgres: unconfined
+    container.apparmor.security.beta.kubernetes.io/initdb: unconfined
 spec:
   instances: 1
   imageName: ghcr.io/cloudnative-pg/postgresql:16.4
