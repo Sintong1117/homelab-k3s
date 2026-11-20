@@ -4,6 +4,13 @@
 # Cluster ini otomatis membuat Secret "portofolio-db-app"
 # dengan key: dbname, user, password, host, port, uri, jdbc-uri
 # yang direferensikan oleh website.yaml
+#
+# Catatan penting:
+# - bootstrap.initdb WAJIB ada agar Secret portofolio-db-app terbentuk.
+# - options bersifat mutually exclusive dengan encoding/localeCType/
+#   localeCollate, jadi semua parameter ditulis lengkap di options.
+# - huge_pages=off adalah pencegahan agar initdb tidak crash di node
+#   yang mengaktifkan hugepages.
 # ============================================
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
@@ -32,9 +39,12 @@ spec:
       owner: app
       secret:
         name: portofolio-db-app
-      encoding: UTF8
-      localeCType: C
-      localeCollate: C
+      options:
+        - "--encoding=UTF8"
+        - "--lc-collate=C"
+        - "--lc-ctype=C"
+        - "-c"
+        - "huge_pages=off"
 
   # Backup minimal (opsional, bisa dihapus kalau tidak perlu)
   # backup:
