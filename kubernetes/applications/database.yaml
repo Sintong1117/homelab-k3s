@@ -1,16 +1,16 @@
 # ============================================
 # CloudNativePG Cluster - PostgreSQL untuk Portofolio
 # ============================================
-# Cluster ini otomatis membuat Secret "portofolio-db-app"
-# dengan key: dbname, user, password, host, port, uri, jdbc-uri
-# yang direferensikan oleh website.yaml
-#
-# Catatan penting:
-# - bootstrap.initdb WAJIB ada agar Secret portofolio-db-app terbentuk.
-# - options bersifat mutually exclusive dengan encoding/localeCType/
-#   localeCollate, jadi semua parameter ditulis lengkap di options.
-# - huge_pages=off adalah pencegahan agar initdb tidak crash di node
-#   yang mengaktifkan hugepages.
+# Catatan:
+# - bootstrap.initdb TIDAK mengisi field 'secret:' agar CNPG
+#   otomatis membuat Secret "portofolio-db-app" (nama default
+#   <cluster>-app) lengkap dengan key: username, password,
+#   dbname, host, port, uri, jdbc-uri.
+# - options bersifat mutually exclusive dengan encoding/
+#   localeCType/localeCollate, jadi semua parameter ditulis
+#   lengkap di options.
+# - huge_pages=off mencegah initdb crash di node dengan
+#   hugepages aktif.
 # ============================================
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
@@ -37,23 +37,9 @@ spec:
     initdb:
       database: app
       owner: app
-      secret:
-        name: portofolio-db-app
       options:
         - "--encoding=UTF8"
         - "--lc-collate=C"
         - "--lc-ctype=C"
         - "-c"
         - "huge_pages=off"
-
-  # Backup minimal (opsional, bisa dihapus kalau tidak perlu)
-  # backup:
-  #   barmanObjectStore:
-  #     destinationPath: s3://bucket/path
-  #     s3Credentials:
-  #       accessKeyId:
-  #         name: s3-creds
-  #         key: ACCESS_KEY_ID
-  #       secretAccessKey:
-  #         name: s3-creds
-  #         key: SECRET_ACCESS_KEY
